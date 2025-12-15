@@ -18,8 +18,20 @@ struct User{
 };
 
                                 //Function Definitions
-//Fucntion to update stats
-void Update_Stats(User&player, int health_change, int energy_change){
+
+//Function for items that the user can carry
+void Inventory(User& player, string item){
+    if (player.inventory.size()<5){
+        cout<<"Adding to inventory.....\n";
+        player.inventory.push_back(item);
+        cout<<item<<" was added to your inventory.\n";
+    }
+    else{
+        cout<<"Item wasn't added. You can carry maximum 5 items at a time!\n";
+    }
+}
+//Function to update stats
+void Update_Stats(User& player, int health_change, int energy_change){
     //I will pass neg values for health and energy points loss so I am simply adding them
     player.health +=health_change;
     player.energy+=energy_change;
@@ -49,11 +61,36 @@ void Update_Stats(User&player, int health_change, int energy_change){
         player.isAlive = false;
     }
 }
+void Player_Condition(int&health, int&energy){
+    cout<<"Current Energy And Health Level is: \n";
+    cout<<"Health xp: "<<health<<" % "<<" || "<<"Energy xp: "<<energy<<" % "<<endl;
+}
 //Scenario = Earthquake
-string EarthQuake(User&player){
+string EarthQuake(User& player){
     cout << "\n========================================" << endl;
     cout << "       CIRCUMSTANCE : MAGNITUDE 7.0          " << endl;
     cout << "========================================" << endl;
+
+    //Some context
+    cout << "\n[WARNING]: Seismic activity detected nearby!" << endl;
+    cout << "You have 15 seconds to grab ONE item nearby:" << endl;
+    cout << "1. First Aid Kit" << endl;
+    cout << "2. 5L Water Bottle" << endl;
+    cout << "3. Gaming Laptop" << endl;
+    cout << "What will you choose?: ";
+    
+    int choice;
+    cin >> choice;
+
+    if (choice == 1){
+        Inventory(player, "First Aid Kit");
+    } 
+    else if (choice == 2) {
+        Inventory(player, "Water Bottle");
+    }
+    else if (choice == 3) {
+        Inventory(player, "Gaming Laptop");
+    }
 
     //Question #1 
     cout << "You are on the 4th floor. The room starts shaking violently." << endl;
@@ -64,7 +101,6 @@ string EarthQuake(User&player){
     cout << "2. Drop, Cover, and Hold on to wait under a table till the shocks settle down." << endl;
     cout << "3. Run to the balcony." << endl;
 
-    int choice;
     cout<<"Enter your choice (1-3): \n";
     cin>>choice;
     
@@ -293,7 +329,7 @@ switch(random_number){
 
     }
     
-    //Initializing stats for the player using tthe struct
+    //Initializing stats for the player using the struct
     User player;
     cout<<"Enter your name to proceed: ";
     getline(cin, player.name);
@@ -302,6 +338,7 @@ switch(random_number){
     player.isAlive=true;
     player.inventory={"Empty"};
 
+    return 0;
 
 }
 
