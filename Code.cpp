@@ -2,7 +2,7 @@
 #include<string>
 #include<cstdlib>
 #include<ctime>
-//for a dynamic array to store inventory items as it is modifiable. 
+//using vector for a dynamic array to store inventory items as it is modifiable. 
 //Items can be both added and removed 
 #include<vector>
 
@@ -30,16 +30,7 @@ void Inventory(User& player, string item){
         cout<<"Item wasn't added. You can carry maximum 5 items at a time!\n";
     }
 }
-void Show_Inventory(string&item){
-    //passing by refrence the items that the user chose
-    cout<<"________YOUR INVENTORY________\n";
-    //running a range based loop to print out the dynamic array
-    //syntax involves const name: name
-    for(const item : item ){
-        cout<<item<<", ";
-    }
-    cout<<endl;
-}
+
 //Function to update stats
 void Update_Stats(User& player, int health_change, int energy_change){
     //I will pass neg values for health and energy points loss so I am simply adding them
