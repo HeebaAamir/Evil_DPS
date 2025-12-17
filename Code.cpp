@@ -332,10 +332,9 @@ string Power_Outage(User& player){
         Inventory(player, "Power Bank");
     }
 
-    cout << "\nYou are on the 4th floor. The hallway is pitch dark." << endl;
-    cout << "Emergency lights fade, and you hear distant sirens outside." << endl;
+    cout << "\nYou are on the 4th floor. The emergency lights flicker and then turn off" << endl;
+    cout << "The hallway is pitch dark and you hear distant sirens outside." << endl;
     cout << "What is your immediate action?" << endl;
-    
     cout << "1. Head for the elevator to reach the lobby." << endl;
     cout << "2. Stay put, use your light, and secure hazards (You unplug all electronics)." << endl;
     cout << "3. Step onto the balcony to assess what's happening outside." << endl;
@@ -344,15 +343,16 @@ string Power_Outage(User& player){
     cin >> choice;
 
     switch (choice) {
+
         case 1:
-            cout << "You walk toward the elevator...\n";
+            cout << "You walk toward the elevator....\n";
             cout << "ERROR: No power. The elevator is dead.\n";
             cout << "You fumble in the dark and feel anxious.\n";
             Update_Stats(player, -3, -25);
             break;
 
         case 2: 
-            cout << "You turn on a light source and do a quick safety sweep...\n";
+            cout << "You turn on a  small light source and do a quick safety sweep...\n";
             cout << "You unplug sensitive devices and clear trip hazards.\n";
             cout << "Good call! You reduce risk while conserving energy.\n";
            // best-practice behavior
@@ -363,10 +363,7 @@ string Power_Outage(User& player){
             cout << "You step onto the balcony to look around...\n";
             cout << "The wind picks up; it’s cold and visibility is poor.\n";
             cout << "You get a mild chill but spot that the whole block is dark.\n";
-            int dH = -5, dE = -12;
-
-            
-            Update_Stats(player, -5, -10);
+            Update_Stats(player, -5, -12);
             break;
         }
         default:
@@ -375,10 +372,49 @@ string Power_Outage(User& player){
             break;
     }
 
+    //Question #2
+    cout << "\nYou hear a faint buzzing from your apartment's breaker panel.\n";
+    cout << "A neighbor shouts that the outage might be on the grid.\n";
+    cout << "What do you do now?\n";
+    cout << "1. Inspect your unit’s breaker panel carefully with a flashlight.\n";
+    cout << "2. Head to the basement to check a building generator (if any).\n";
+    cout << "3. Use your radio/phone to get utility updates and stay put.\n";
+
+    cout << "Enter your choice (1-3): \n";
+    cin >> choice;
+
+    switch(choice){
+        case 1:
+        cout << "You open the panel gently and check for tripped breakers...\n";
+        cout << "No burning smell, no visible damage. It looks normal.\n";
+        cout << "You close it and decide to wait for updates.\n";
+        Update_Stats(player,0, -15);
+        break;
+
+        case 2:
+        cout << "You make your way to the basement...\n";
+        cout << "It’s dark, stuffy, and a bit disorienting.\n";
+        cout << "You don’t find a safe way to start anything; better to avoid risks.\n";
+        Update_Stats(player,-5 ,-10);
+        break;
+
+        case 3:
+        cout << "You tune into emergency updates...\n";
+        cout << "Authorities confirm a grid failure and advise staying indoors.\n";
+        cout << "You conserve energy and plan for several hours without power.\n";
+        cout<<"You made a good choice!\n";
+        Update_Stats(player, 0, -5);
+        break;
+    }
+
+    //Question #3
+    
 
 
 
 }
+   
+
 
 
 
