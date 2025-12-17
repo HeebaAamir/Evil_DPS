@@ -384,7 +384,7 @@ string Power_Outage(User& player){
     cin >> choice;
 
     switch(choice){
-        case 1:
+    case 1:
         cout << "You open the panel gently and check for tripped breakers...\n";
         cout << "No burning smell, no visible damage. It looks normal.\n";
         cout << "You close it and decide to wait for updates.\n";
@@ -405,10 +405,32 @@ string Power_Outage(User& player){
         cout<<"You made a good choice!\n";
         Update_Stats(player, 0, -5);
         break;
-    }
+    }  
 
     //Question #3
-    
+    cout << "\nYour refrigerator and freezer are now off.\n";
+    cout << "Perishables could spoil if the outage lasts long.\n";
+    cout << "How do you manage food safety?\n";
+    cout << "1. Keep doors closed; move essentials to a cooler with ice if available.\n";
+    cout << "2. Open the fridge repeatedly to check and snack now.\n";
+    cout << "3. Cook perishables immediately on a gas stove for light and warmth.\n";
+
+    cout << "Enter your choice (1-3): \n";
+    cin >> choice;
+
+    switch(choice){
+        case 1:
+        cout << "You limit opening and use a cooler efficiently...\n";
+        cout << "You remember that you have stored perishable items in your refrigrator which you can use in an emergency.\n";
+        cout << "You find an ice cooler to store milk and leftover food from tomorrow.\n";
+        cout << "You extend the safe time for your food.\n";
+        Update_Stats(player,0,-10);
+        break;
+
+
+        
+    }
+
 
 
 
