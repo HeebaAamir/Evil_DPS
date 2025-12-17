@@ -302,6 +302,98 @@ switch (choice) {
         break;
     }
 }
+
+
+//Scenario: Power Outage
+string Power_Outage(User& player){
+        cout << "\n========================================" << endl;
+        cout << "         CIRCUMSTANCE : CITY-WIDE BLACKOUT         " << endl;
+        cout << "========================================" << endl;
+
+    // Some context
+    cout << "\n[ALERT]: The power has gone out across the city!" << endl;
+    cout << "It's night, and the building emergency lights are flickering." << endl;
+    cout << "You have 15 seconds to grab ONE item nearby:" << endl;
+    cout << "1. Flashlight" << endl;
+    cout << "2. Battery-Powered Radio" << endl;
+    cout << "3. Power Bank (Phone at 20%)" << endl;
+    cout << "What will you choose?: ";
+
+    int choice;
+    cin >> choice;
+
+    if (choice == 1) {
+        Inventory(player, "Flashlight");
+       
+    }  else if (choice == 2) {
+        Inventory(player, "Battery-Powered Radio");
+        
+    } else if (choice == 3) {
+        Inventory(player, "Power Bank");
+    }
+
+    cout << "\nYou are on the 4th floor. The hallway is pitch dark." << endl;
+    cout << "Emergency lights fade, and you hear distant sirens outside." << endl;
+    cout << "What is your immediate action?" << endl;
+    
+    cout << "1. Head for the elevator to reach the lobby." << endl;
+    cout << "2. Stay put, use your light, and secure hazards (You unplug all electronics)." << endl;
+    cout << "3. Step onto the balcony to assess what's happening outside." << endl;
+
+    cout << "Enter your choice (1-3): \n";
+    cin >> choice;
+
+    switch (choice) {
+        case 1:
+            cout << "You walk toward the elevator...\n";
+            cout << "ERROR: No power. The elevator is dead.\n";
+            cout << "You fumble in the dark and feel anxious.\n";
+            Update_Stats(player, -3, -25);
+            break;
+
+        case 2: 
+            cout << "You turn on a light source and do a quick safety sweep...\n";
+            cout << "You unplug sensitive devices and clear trip hazards.\n";
+            cout << "Good call! You reduce risk while conserving energy.\n";
+           // best-practice behavior
+            Update_Stats(player, 0, -10);
+            break;
+        
+        case 3: {
+            cout << "You step onto the balcony to look around...\n";
+            cout << "The wind picks up; it’s cold and visibility is poor.\n";
+            cout << "You get a mild chill but spot that the whole block is dark.\n";
+            int dH = -5, dE = -12;
+
+            
+            Update_Stats(player, -5, -10);
+            break;
+        }
+        default:
+            cout << "You hesitate and do nothing...\n";
+            Update_Stats(player, -5, -5);
+            break;
+    }
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
    
 int main(){
 
