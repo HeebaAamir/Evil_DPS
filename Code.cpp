@@ -17,6 +17,12 @@ struct User{
     bool isAlive;
 };
 
+//Struct for item management
+struct Item {
+    string name;
+    int uses;          
+};
+
                                 //Function Definitions
 
 //Function for items that the user can carry
@@ -30,6 +36,26 @@ void Inventory(User& player, string item){
         cout<<"Item wasn't added. You can carry maximum 5 items at a time!\n";
     }
 }
+
+
+//Function to see if user has smth in their inventory
+//passing the 2 structs into it
+bool HasItem(const User& player, const std::string& item) {
+
+    //auto will automatically choose the right data type for variable "checker"
+    for (const auto& checker : player.inventory) {
+        if (checker == item) {
+            return true;   
+        }
+    }
+    return false;
+}
+
+
+
+
+
+
 
 //Function to update stats
 void Update_Stats(User& player, int health_change, int energy_change){
