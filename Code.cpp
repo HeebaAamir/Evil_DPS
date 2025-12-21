@@ -513,7 +513,6 @@ string Power_Outage(User& player){
     cout << "1. Flashlight" << endl;
     cout << "2. Battery-Powered Radio" << endl;
     cout << "3. Power Bank (Phone at 20%)" << endl;
-    cout << "4. Use an item from your inventory.\n";
     cout << "What will you choose?: ";
 
     int choice;
@@ -535,6 +534,7 @@ string Power_Outage(User& player){
     cout << "1. Head for the elevator to reach the lobby." << endl;
     cout << "2. Stay put, use your light, and secure hazards (You unplug all electronics)." << endl;
     cout << "3. Step onto the balcony to assess what's happening outside." << endl;
+    cout << "4. Use an item from your inventory. \n";
 
     cout << "Enter your choice (1-4): \n";
     cin >> choice;
@@ -576,6 +576,11 @@ string Power_Outage(User& player){
     //Question #2
     cout << "\nYou hear a faint buzzing from your apartment's breaker panel.\n";
     cout << "A neighbor shouts that the outage might be on the grid.\n";
+    cout<<".........................\n";
+    
+    OfferPickup(player, {"Flashlight"},
+            "Near the breaker panel, you notice a spare flashlight on a shelf.");
+
     cout << "What do you do now?\n";
     cout << "1. Inspect your unit’s breaker panel carefully with a flashlight.\n";
     cout << "2. Head to the basement to check a building generator (if any).\n";
@@ -624,8 +629,9 @@ string Power_Outage(User& player){
     cout << "1. Keep doors closed; move essentials to a cooler with ice if available.\n";
     cout << "2. Open the fridge repeatedly to check and snack now.\n";
     cout << "3. Cook perishables immediately on a gas stove for light and warmth.\n";
+    cout << "4. Use something from the inventory.\n";
 
-    cout << "Enter your choice (1-3): \n";
+    cout << "Enter your choice (1-4): \n";
     cin >> choice;
 
     switch(choice){
@@ -652,20 +658,29 @@ string Power_Outage(User& player){
         Update_Stats(player, -9,-16);
         break;
 
+        case 4:
+        UseInventoryItem(player);
+        break;
+
         default:
         cout << "You do nothing and hope power returns...\n";
         Update_Stats(player, -5, -5);
     }
 
     //Question 4
-
+    
+    OfferPickup(player, {"Power Bank"},
+            "In a drawer, you find a spare power bank with some charge left.");
+            //ADD DELAY HERE
+    cout<<" 45 minutes have passed......\n";
     cout << "\nNight deepens. You need light and a way to charge your phone.\n";
     cout << "What is your approach?\n";
     cout << "1. Use battery lanterns/flashlight and ration batteries.\n";
     cout << "2. Light multiple candles around the apartment for brightness.\n";
     cout << "3. Sit in your idling car inside the garage to charge devices.\n";
+    cout << "4. Use something from your inventory.\n";
 
-    cout << "Enter your choice (1-3): \n";
+    cout << "Enter your choice (1-4): \n";
     cin >> choice;
 
     switch (choice) {
@@ -689,6 +704,10 @@ string Power_Outage(User& player){
             Update_Stats(player, -25, -15);
             break;
         
+        case 4:
+        UseInventoryItem(player);
+        break;
+        
         default:
             cout << "You delay, straining your eyes in the dark and wasting time.\n";
             Update_Stats(player, -5, -5);
@@ -703,8 +722,9 @@ string Power_Outage(User& player){
     cout << "1. Help them relocate to a nearby clinic/shelter with backup power.\n";
     cout << "2. Offer your power bank for phone calls and stay with them briefly.\n";
     cout << "3. Promise to inform responders and continue managing your own situation.\n";
+    cout << "4. Use an item from your inventory.\n";
 
-    cout << "Enter your choice (1-3): \n";
+    cout << "Enter your choice (1-4): \n";
     cin >> choice;
 
     switch (choice) {
@@ -728,6 +748,10 @@ string Power_Outage(User& player){
             cout<<"You know that you can be of help to someone else only if you stay alive and safe yourself.\n";
             Update_Stats(player, 0, -6);
             break;
+        
+        case 4:
+        UseInventoryItem(player);
+        break;
         
         default:
             cout << "You freeze, losing precious minutes...\n";
