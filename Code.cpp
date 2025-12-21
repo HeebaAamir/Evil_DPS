@@ -5,6 +5,7 @@
 //using vector for a dynamic array to store inventory items as it is modifiable. 
 //Items can be both added and removed 
 #include<vector>
+#include<algorithm>//for find fucntion
 
 using namespace std;
 
@@ -92,6 +93,114 @@ void Player_Condition(int&health, int&energy){
     cout<<"Current Energy And Health Level is: \n";
     cout<<"Health xp: "<<health<<" % "<<" || "<<"Energy xp: "<<energy<<" % "<<endl;
 }
+
+
+//Fucntion to remove item from inventory to be able to use it
+bool RemoveItem(User& player, const string& item) {
+    //This is a standard find function with its syntax.
+    //due to auto, the variable takes the data type that it is supposed to be
+    //Rest is the syntax of the find function
+    auto var = find(player.inventory.begin(), player.inventory.end(), item);
+    if (var != player.inventory.end()) {
+        player.inventory.erase(var);
+        return true;
+    }
+    return false;
+}
+
+
+//function to print out an inventory for user
+void ShowInventory(const User& player) {
+cout << "Your inventory: ";
+//this is a variable counter about how many actual items there are
+//Bcs right now I have initialized the inventory as "EMPTY"
+    int Real_Item_Count = 0;
+    for (const auto& itemName : player.inventory) {
+        
+        //if that item isnt empty and exsists print it out
+            if (itemName != "Empty") {
+                cout << "[" << itemName << "] ";
+                ++Real_Item_Count;
+            }
+        }
+
+    if (Real_Item_Count == 0) {
+        cout << "(empty)";
+    }
+    cout << "\n";
+}
+
+//AI HELP FOR THE USING FUNCTION
+void UseInventoryItem(User& player) {
+// Filter out the "Empty" placeholder
+    vector<string> usable;
+    usable.reserve(player.inventory.size());
+    for (const auto& s : player.inventory) {
+        if (s != "Empty") usable.push_back(s);
+    }
+
+    if (usable.empty()) {
+        cout << "You have nothing useful to use right now.\n";
+        return;
+    }
+
+    cout << "\n=== Use an Item ===\n";
+    ShowInventory(player);
+    cout << "Choose an item to use:\n";
+    for (size_t i = 0; i < usable.size(); ++i) {
+        cout << (i + 1) << ". " << usable[i] << "\n";
+    }
+    cout << "0. Cancel\n";
+
+    int pick;
+    cin >> pick;
+    if (pick == 0) {
+        cout << "You decided not to use anything.\n";
+        return;
+    }
+    if (pick < 1 || pick > static_cast<int>(usable.size())) {
+        cout << "Invalid choice.\n";
+        return;
+    }
+
+    const string& item = usable[pick - 1];
+
+    if (item == "First Aid Kit") {
+        cout << "You open the First Aid Kit and treat minor wounds.\n";
+        Update_Stats(player, +15, -5);
+        RemoveItem(player, item);
+    } else if (item == "Water Bottle") {
+        cout << "You drink water and feel more alert.\n";
+        Update_Stats(player, 0, +15);
+        RemoveItem(player, item);
+    } else if (item == "Gaming Laptop") {
+        cout << "You lug the gaming laptop around... it's not very helpful.\n";
+        Update_Stats(player, -2, -8);
+        cout << "You drop unnecessary weight.\n";
+        RemoveItem(player, item);
+    } else if (item == "Flashlight") {
+        cout << "You switch on the flashlight. The path is clearer.\n";
+        Update_Stats(player, 0, +8);
+        RemoveItem(player, item);
+    } else if (item == "Battery-Powered Radio") {
+        cout << "You tune into emergency broadcasts. The guidance calms you.\n";
+        Update_Stats(player, 0, +6);
+        RemoveItem(player, item);
+    } else if (item == "Power Bank") {
+        cout << "You top up your phone briefly and feel reassured.\n";
+        Update_Stats(player, 0, +6);
+        RemoveItem(player, item);
+    } else {
+        cout << "That item doesn't help here.\n";
+        cout<<"Can't use it right now.\n";
+    }
+    //displaying user's health now after using some items to heal himself
+    Player_Condition(player.health, player.energy);
+}
+
+
+
+
 //Scenario = Earthquake
 string EarthQuake(User& player){
     cout << "\n========================================" << endl;
@@ -216,8 +325,9 @@ string EarthQuake(User& player){
     cout << "1. Try to clear some debris to make space to move.\n";
     cout << "2. Look for an alternate staircase or fire escape.\n";
     cout << "3. Crawl through the narrow gap carefully.\n";
+    cout << "4. Use an item from your inventory.\n";
 
-    cout << "Enter your choice (1-3): \n";
+    cout << "Enter your choice (1-4): \n";
     cin >> choice;
 
 switch (choice) {
@@ -239,6 +349,12 @@ switch (choice) {
         cout << "You flatten yourself and try to slide through the gap.\n";
         cout << "A jagged edge cuts your arm as you squeeze past!\n";
         Update_Stats(player, -15, -10); // more health loss, less energy
+        break;
+
+
+    
+    case 4:                           
+        UseInventoryItem(player);
         break;
 
     default:
@@ -346,6 +462,7 @@ string Power_Outage(User& player){
     cout << "1. Flashlight" << endl;
     cout << "2. Battery-Powered Radio" << endl;
     cout << "3. Power Bank (Phone at 20%)" << endl;
+    cout << "4. Use an item from your inventory.\n";
     cout << "What will you choose?: ";
 
     int choice;
@@ -360,7 +477,7 @@ string Power_Outage(User& player){
     } else if (choice == 3) {
         Inventory(player, "Power Bank");
     }
-
+    cout<<".............................................................................\n";
     cout << "\nYou are on the 4th floor. The emergency lights flicker and then turn off" << endl;
     cout << "The hallway is pitch dark and you hear distant sirens outside." << endl;
     cout << "What is your immediate action?" << endl;
@@ -368,7 +485,7 @@ string Power_Outage(User& player){
     cout << "2. Stay put, use your light, and secure hazards (You unplug all electronics)." << endl;
     cout << "3. Step onto the balcony to assess what's happening outside." << endl;
 
-    cout << "Enter your choice (1-3): \n";
+    cout << "Enter your choice (1-4): \n";
     cin >> choice;
 
     switch (choice) {
@@ -394,7 +511,11 @@ string Power_Outage(User& player){
             cout << "You get a mild chill but spot that the whole block is dark.\n";
             Update_Stats(player, -5, -12);
             break;
-        }
+
+        case 4:
+        UseInventoryItem(player);
+        break;
+
         default:
             cout << "You hesitate and do nothing...\n";
             Update_Stats(player, -5, -5);
