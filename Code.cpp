@@ -130,6 +130,39 @@ cout << "Your inventory: ";
     cout << "\n";
 }
 
+
+//Offering user chances to pick up stuff
+//USED AI REFRENCE FOR THIS FUNCTION
+void OfferPickup(User& player, const vector<string>& itemsNearPlayer, const string& descriptionPrompt) {
+    // If there is nothing to offer, do nothing and return.
+    if (itemsNearPlayer.empty()) return;
+
+    cout << "\n=== Nearby Items ===\n";
+    cout << descriptionPrompt << "\n";
+
+    // List all nearby items with a 1-based index for user selection.
+    for (size_t index = 0; index < itemsNearPlayer.size(); ++index) {
+        cout << (index + 1) << ". " << itemsNearPlayer[index] << "\n";
+    }
+    cout << "0. Ignore and continue\n";
+
+    // Read the player's choice.
+    int chosenIndex;
+    cin >> chosenIndex;
+
+    // Validate input: 0 means "skip", out-of-range means "invalid".
+    if (chosenIndex <= 0 || chosenIndex > static_cast<int>(itemsNearPlayer.size())) {
+        cout << "You decide not to pick up anything.\n";
+        return;
+    }
+
+    // Convert the 1-based menu choice to a 0-based vector index and add the item.
+    // Your Inventory(...) function already handles the "max 5 items" rule and prints feedback.
+    const string& selectedItem = itemsNearPlayer[chosenIndex - 1];
+    Inventory(player, selectedItem);
+}
+
+
 //AI HELP FOR THE USING FUNCTION
 void UseInventoryItem(User& player) {
 // Filter out the "Empty" placeholder
@@ -192,7 +225,7 @@ void UseInventoryItem(User& player) {
         RemoveItem(player, item);
     } else {
         cout << "That item doesn't help here.\n";
-        cout<<"Can't use it right now.\n";
+        cout << "Can't use it right now.\n";
     }
     //displaying user's health now after using some items to heal himself
     Player_Condition(player.health, player.energy);
@@ -236,8 +269,9 @@ string EarthQuake(User& player){
     cout << "1. Run for the elevator." << endl;
     cout << "2. Drop, Cover, and Hold on to wait under a table till the shocks settle down." << endl;
     cout << "3. Run to the balcony." << endl;
+    cout << "4. Use an item from your inventory.\n";
 
-    cout<<"Enter your choice (1-3): \n";
+    cout<<"Enter your choice (1-4): \n";
     cin>>choice;
     
     switch(choice){
@@ -267,6 +301,10 @@ string EarthQuake(User& player){
         //Major injury and loss to health
         Update_Stats(player, -70, -65);
         break;
+        
+        case 4: 
+        UseInventoryItem(player);
+        break;
 
         default:
         cout << "You hesitate and do nothing...\n";
@@ -283,8 +321,9 @@ string EarthQuake(User& player){
     cout << "1. Stay under the table and wait for 1 more minute.\n";
     cout << "2. Move towards the emergency stairs carefully.\n";
     cout << "3. Call out for help to see if anyone else is nearby.\n";
+    cout << "4. Use an item from your inventory.\n";
 
-    cout << "Enter your choice (1-3): \n";
+    cout << "Enter your choice (1-4): \n";
     cin >> choice;
 
     switch (choice) {
@@ -310,6 +349,10 @@ string EarthQuake(User& player){
         cout<<"You can hear a faint noise coming from the corridor./n";
         cout<<"You try to locate were they are.\n";
         Update_Stats(player, 0, -5); 
+        break;
+
+    case 4: 
+        UseInventoryItem(player);
         break;
 
     default:
@@ -351,8 +394,6 @@ switch (choice) {
         Update_Stats(player, -15, -10); // more health loss, less energy
         break;
 
-
-    
     case 4:                           
         UseInventoryItem(player);
         break;
@@ -367,12 +408,18 @@ switch (choice) {
 // Question #4 
     cout << "\nYou smell smoke. A thin haze fills the corridor near the ceiling....\n";
     cout << "You hear cracking sounds from a room down the hall.\n";
+
+    //Giving a chance midgame to pick items
+    OfferPickup(player, {"Water Bottle", "First Aid Kit"},
+            "You spot a half-full water bottle and a small first-aid pouch on a cart.");
+
     cout << "How do you proceed?\n";
     cout << "1. Cover your mouth with cloth and crawl low to the exit.\n";
     cout << "2. Use nearby water and try setting off small flames near the door (if any).\n";
     cout << "3. Run past the smoke quickly to save time.\n";
+    cout << "4. Use your inventoy.\n";
 
-    cout << "Enter your choice (1-3): \n";
+    cout << "Enter your choice (1-4): \n";
     cin >> choice;
 
     switch (choice) {
@@ -396,6 +443,10 @@ switch (choice) {
         cout << "You cough violently and feel dizzy.\n";
         //risky choice
         Update_Stats(player, -25, -15); 
+        break;
+
+    case 4: 
+        UseInventoryItem(player);
         break;
 
        default:
@@ -450,7 +501,7 @@ switch (choice) {
 
 //Scenario: Power Outage
 string Power_Outage(User& player){
-    cout<<endl;
+        cout<<endl;
         cout << "========================================" << endl;
         cout << "     CIRCUMSTANCE : CITY-WIDE BLACKOUT         " << endl;
         cout << "========================================" << endl;
@@ -505,7 +556,7 @@ string Power_Outage(User& player){
             Update_Stats(player, 0, -10);
             break;
         
-        case 3: {
+        case 3: 
             cout << "You step onto the balcony to look around...\n";
             cout << "The wind picks up; it’s cold and visibility is poor.\n";
             cout << "You get a mild chill but spot that the whole block is dark.\n";
@@ -529,8 +580,9 @@ string Power_Outage(User& player){
     cout << "1. Inspect your unit’s breaker panel carefully with a flashlight.\n";
     cout << "2. Head to the basement to check a building generator (if any).\n";
     cout << "3. Use your radio/phone to get utility updates and stay put.\n";
+    cout << "4. Use an item from your inventory.\n";
 
-    cout << "Enter your choice (1-3): \n";
+    cout << "Enter your choice (1-4): \n";
     cin >> choice;
 
     switch(choice){
@@ -554,6 +606,10 @@ string Power_Outage(User& player){
         cout << "You conserve energy and plan for several hours without power.\n";
         cout<<"You made a good choice!\n";
         Update_Stats(player, 0, -5);
+        break;
+
+        case 4:
+        UseInventoryItem(player);
         break;
 
         default:
@@ -652,35 +708,33 @@ string Power_Outage(User& player){
     cin >> choice;
 
     switch (choice) {
-        case 1: {
+        case 1: 
             cout << "You support the neighbor and move carefully to a safer location...\n";
             cout << "It takes effort, but their condition stabilizes.\n";
             cout<<"You lost energy and feel drained.\n";
             Update_Stats(player, -5, -22);
             break;
-        }
-        case 2: {
+        
+        case 2: 
             cout << "You share your power bank and help them make necessary calls...\n";
             cout << "You reassure them and note the nearest facility.\n";
             cout<<"You power bank is a bit drained now but you feel happy to help.\n";
             Update_Stats(player, -2, -12);
             break;
-        }
-        case 3: {
+        
+        case 3: 
             cout << "You promise to notify responders and proceed to secure your area...\n";
             cout << "You conserve energy but feel uneasy about leaving.\n";
             cout<<"You know that you can be of help to someone else only if you stay alive and safe yourself.\n";
             Update_Stats(player, 0, -6);
             break;
-        }
+        
         default:
             cout << "You freeze, losing precious minutes...\n";
             Update_Stats(player, -5, -5);
             break;
     }
-
     return "PowerOutage Completed";
-
 }
 
 
@@ -694,7 +748,7 @@ void Scoring_System_For_Ending_Display(User&player){
         else if(score > 50){
              cout << "Rating: SURVIVOR" << endl;}
         else {
-            cout << "Rating: NOVICE - Needs Training" << endl;}
+            cout << "Rating: NOTICE - Needs Training" << endl;}
 }
 
 int main(){
