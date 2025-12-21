@@ -327,7 +327,9 @@ switch (choice) {
         Update_Stats(player, -5, -5);
         break;
     }
+    return "EarthQuake Simulation Ccmplete!\n";
 }
+
 
 
 //Scenario: Power Outage
@@ -557,35 +559,22 @@ string Power_Outage(User& player){
 
     return "PowerOutage Completed";
 
-
-
-
-
-
-        
-
-
-
-
 }
-   
 
 
+void Scoring_System_For_Ending_Display(User&player){
+     double score = (player.health * 0.4) + (player.energy * 0.3);
+        cout << "Final Score: " << score << "/100" << endl;
 
+        if (score > 80) {
+            cout << "Rating: SURVIVAL EXPERT" << endl;
+        }
+        else if(score > 50){
+             cout << "Rating: SURVIVOR" << endl;}
+        else {
+            cout << "Rating: NOVICE - Needs Training" << endl;}
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-   
 int main(){
 
 //This code block randomly decides the disaster to be simulated
@@ -597,9 +586,26 @@ random_number=rand()%4+1;
 if( random_number == 1){
     disaster = "EarthQuake";
 }
+
+ //Initializing stats for the player using the struct
+    User player;
+    cout<<"Enter your name to proceed: ";
+    getline(cin, player.name);
+    player.health=100;
+    player.energy=100;
+    player.isAlive=true;
+    player.inventory={"Empty"};
+    
+    //I need to display smth that gives an end and closure to the game
+    string outcome;
+    //if user is alive then we can print smth like complete and stuff and see his score at that point and give a certification
+    //for that we'll need to hardcode it for all cases ig
+
+
 switch(random_number){
     case 1:
     disaster = "EarthQuake";
+    outcome = EarthQuake(player);
     break;
     case 2:
     disaster = "Flood";
@@ -609,19 +615,26 @@ switch(random_number){
     break;
     case 4:
     disaster = "Power Outage";
+    outcome = Power_Outage(player);
     break;
+    }
+
+    //This is smth we get out of each function, we will just display it at the ending of a function call
+    cout<<outcome<<endl;
+
+    //if the user is alive:
+    if(player.isAlive==true){
+       
+        cout<<"Congragulations!! You survived !!\n";
+        Scoring_System_For_Ending_Display(player);
 
     }
-    
-    //Initializing stats for the player using the struct
-    User player;
-    cout<<"Enter your name to proceed: ";
-    getline(cin, player.name);
-    player.health=100;
-    player.energy=100;
-    player.isAlive=true;
-    player.inventory={"Empty"};
 
+    if(player.isAlive==false) {
+        cout << "\n--- GAME OVER ---" << endl;
+        cout << "You failed to survive the disaster." << endl;
+        Scoring_System_For_Ending_Display(player);
+    }
     return 0;
 
 }
