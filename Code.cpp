@@ -61,9 +61,11 @@ int GetTimedInput(int seconds) {
             if (remaining < 0) remaining = 0;
 
             if (remaining != lastShown) {
+                 setColor(1);
                 std::cout << "\rTime remaining: " << std::setw(2) << std::setfill('0')
                           << remaining << "s " << std::flush;
                 lastShown = remaining;
+                 setColor(7);
             }
         }
 
@@ -105,7 +107,9 @@ int GetTimedInput(int seconds) {
 
         // Timed out?
         if (std::chrono::steady_clock::now() >= deadline) {
+             setColor(4);
             std::cout << "\nTIME'S UP! You hesitated!\n";
+             setColor(7);
             // Clean any pending stdin
             if (std::cin.rdbuf()->in_avail() > 0) {
                 std::cin.clear();
@@ -121,13 +125,17 @@ int GetTimedInput(int seconds) {
 //Function for items that the user can carry
 void Inventory(User& player, string item){
     if (player.inventory.size()<5){
+         setColor(6);
         cout<<"Adding to inventory.....\n";
         player.inventory.push_back(item);
+         setColor(2);
         cout<<item<<" was added to your inventory.\n";
+         setColor(7);
     }
     else{
-        
+         setColor(4);
         cout<<"Item wasn't added. You can carry maximum 5 items at a time!\n";
+         setColor(7);
     }
 }
 
