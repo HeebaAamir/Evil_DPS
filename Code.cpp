@@ -6,6 +6,7 @@
 //Items can be both added and removed 
 #include<vector>
 #include<algorithm>//for find fucntion
+#include <fstream>
 
 using namespace std;
 
@@ -51,11 +52,6 @@ bool HasItem(const User& player, const std::string& item) {
     }
     return false;
 }
-
-
-
-
-
 
 
 //Function to update stats
@@ -776,67 +772,122 @@ void Scoring_System_For_Ending_Display(User&player){
             cout << "Rating: NOTICE - Needs Training" << endl;}
 }
 
-int main(){
-
-//This code block randomly decides the disaster to be simulated
-srand(time(NULL));
-string disaster;
-
-int random_number;
-random_number=rand()%4+1;
-if( random_number == 1){
-    disaster = "EarthQuake";
-}
-
- //Initializing stats for the player using the struct
-    User player;
-    cout<<"Enter your name to proceed: ";
-    getline(cin, player.name);
-    player.health=100;
-    player.energy=100;
-    player.isAlive=true;
-    player.inventory={"Empty"};
+// Function to check password
+bool CheckPassword(const string& name) {
+    ifstream inFile("password.txt");
     
-    //I need to display smth that gives an end and closure to the game
-    string outcome;
-    //if user is alive then we can print smth like complete and stuff and see his score at that point and give a certification
-    //for that we'll need to hardcode it for all cases ig
-
-
-switch(random_number){
-    case 1:
-    disaster = "EarthQuake";
-    outcome = EarthQuake(player);
-    break;
-    case 2:
-    disaster = "Flood";
-    break;
-    case 3:
-    disaster = "Building on Fire";
-    break;
-    case 4:
-    disaster = "Power Outage";
-    outcome = Power_Outage(player);
-    break;
+    if (!inFile) {
+        // File doesn't exist, create it with this password
+        ofstream outFile("password.txt");
+        outFile << name << endl;
+        outFile.close();
+        cout << "New password created!\n";
+        return true;
     }
-
-    //This is smth we get out of each function, we will just display it at the ending of a function call
-    cout<<outcome<<endl;
-
-    //if the user is alive:
-    if(player.isAlive==true){
-       
-        cout<<"Congragulations!! You survived !!\n";
-        Scoring_System_For_Ending_Display(player);
-
+    
+    string stored_password;
+    inFile >> stored_password;
+    inFile.close();
+    
+    if (name == stored_password) {
+        return true;
+    } else {
+        return false;
     }
-
-    if(player.isAlive==false) {
-        cout << "\n--- GAME OVER ---" << endl;
-        cout << "You failed to survive the disaster." << endl;
-        Scoring_System_For_Ending_Display(player);
-    }
-    return 0;
-
 }
+
+// Function to save game results
+void SaveGameResult(const User& player, const string& disaster) {
+    ofstream file("game_history.txt", ios::app);
+    file << "====================\n";
+    file << "Name: " << player.name << endl;
+    file << "Disaster: " << disaster << endl;
+    file << "Survived: " << (player.isAlive ? "YES" : "NO") << endl;
+    file << "Final Health: " << player.health << endl;
+    file << "Final Energy: " << player.energy << endl;
+    file << "====================\n";
+    file.close();
+}
+
+int main() {
+    string name, stored_name;
+    string disaster, outcome;
+
+    cout << "Enter your name: ";
+    cin >> name;
+
+
+    ifstream inFile("progress.txt");
+
+    if (!inFile) {
+        ofstream outFile("progress.txt");
+        outFile << name << endl;   // first line = password
+        outFile.close();
+
+        cout << "Password set successfully.\n";
+    } 
+    else {
+    
+    inFile >> stored_name;
+    inFile.close();
+
+    if (name != stored_name) {
+        cout << "Wrong password! Access denied.\n";
+        return 0;
+    }
+}
+
+cout << "Access granted. Welcome " << name << "!\n";
+   
+    User player;
+    player.name = name;
+    player.health = 100;
+    player.energy = 100;
+    player.isAlive = true;
+    player.inventory = {"Empty"};
+
+    // ===== RANDOM DISASTER =====
+    srand(time(NULL));
+    int random_number = rand() % 4 + 1;
+
+    outcome = "Scenario completed.";
+
+    switch (random_number) {
+        case 1:
+            disaster = "EarthQuake";
+            outcome = EarthQuake(player);
+            break;
+
+        case 2:
+            disaster = "Flood";
+            break;
+
+        case 3:
+            disaster = "Building on Fire";
+            break;
+
+        case 4:
+            disaster = "Power Outage";
+            outcome = Power_Outage(player);
+            break;
+    }
+
+    // ===== GAME END DISPLAY =====
+    cout << outcome << endl;
+
+    if (player.isAlive) {
+        cout << "Congratulations!! You survived!!\n";
+        Scoring_System_For_Ending_Display(player);
+    } else {
+        cout << "\n--- GAME OVER ---\n";
+        cout << "You failed to survive the disaster.\n";
+        Scoring_System_For_Ending_Display(player);
+    }
+
+    SaveGameResult(player, disaster);
+    cout << "Game saved to history!\n";
+
+    return 0;
+}
+
 

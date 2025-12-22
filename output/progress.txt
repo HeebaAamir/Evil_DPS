@@ -1,0 +1,16 @@
+Areeba
+Name: Areeba
+Alive: 1
+Health: 100
+Energy: 100
+--------------------------
+Name: Areeba
+Alive: 1
+Health: 100
+Energy: 100
+---------------------------
+Name: Areeba
+Alive: 1
+Health: 30
+Energy: 15
+---------------------------
