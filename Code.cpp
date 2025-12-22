@@ -1750,6 +1750,7 @@ int main() {
     SaveGameResult(player, disaster);
     
     // Show their history after game
+    delay(3);
     setColor(6);
     cout << "\n=== YOUR GAME HISTORY ===\n";
     setColor(7);
