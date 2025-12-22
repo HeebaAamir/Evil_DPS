@@ -53,7 +53,7 @@ int GetTimedInput(int seconds) {
     // Clean any leftover characters (e.g., a newline from previous cin >>)
     if (std::cin.rdbuf()->in_avail() > 0) {
         std::cin.clear();
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
     }
 
     // Draw once at start
@@ -120,7 +120,7 @@ int GetTimedInput(int seconds) {
             // Clean any pending stdin
             if (std::cin.rdbuf()->in_avail() > 0) {
                 std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
             }
             return -1;
         }
@@ -256,7 +256,7 @@ void OfferPickup(User& player, const vector<string>& itemsNearPlayer, const stri
 
     // Read the player's choice.
     int chosenIndex;
-    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Add this line first
+    cin.ignore((numeric_limits<streamsize>::max)(), '\n'); // Add this line first
     cin >> chosenIndex;
 
     // Validate input: 0 means "skip", out-of-range means "invalid".
@@ -299,7 +299,7 @@ void UseInventoryItem(User& player) {
     cout << "0. Cancel\n";
 
     int pick;
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cin.ignore((numeric_limits<streamsize>::max)(), '\n');
     cin >> pick;
    
     if (pick == 0) {
