@@ -1659,24 +1659,6 @@ void Scoring_System_For_Ending_Display(User&player){
             cout << "Rating: NOTICE - Needs Training" << endl;}
 }
 
-// Function to check password
-bool CheckPassword(const string& name) {
-    ifstream inFile("password.txt");
-    if (!inFile) {
-        ofstream outFile("password.txt");
-        outFile << name << endl;
-        outFile.close();
-        setColor(2);
-        cout << "New password created!\n";
-        setColor(7);
-        return true;
-    }
-    string stored_password;
-    inFile >> stored_password;
-    inFile.close();
-    return (name == stored_password);
-}
-
 //Regarding game saving i.e including the data handling
 void SaveGameResult(const User& player, const string& disaster) {
     ofstream file("game_history.txt", ios::app);
@@ -1696,31 +1678,7 @@ void SaveGameResult(const User& player, const string& disaster) {
 
 
 
-
-void AppendUserNoteAndShowFile() {
-    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear leftover newline
-
-    string input;
-    cout << "Enter a note to save: ";
-    getline(cin, input);
-
-    // Append note to file
-    ofstream out("Player Progress.txt", ios::app);
-    out << input << "\n";
-    out.close();
-
-    // Display file contents
-    ifstream in("Player Progress.txt");
-    cout << "\n=== YOUR PROGRESS RECORD ===\n";
-    string line;
-    while (getline(in, line)) {
-        cout << line << "\n";
-    }
-    cout << "=======================================\n";
-}
-
 //We want to allow user to be able to play multiple times
-
 string PlayOneRound(User& player, string& disaster) {
     // Reset player stats
     player.health = 100;
@@ -1767,19 +1725,12 @@ int main() {
     cout<<"_____________________________________Good Luck!______________________________________\n";
     delay(3);
     setColor(7);
-   
+
     cout << "Enter your name: ";
     cin >> name;
-    cout <<"(Your name will act as a password for your progress file.)\n";
 
-    if (!CheckPassword(name)) {
-        setColor(4);
-        cout << "Wrong password! Access denied.\n";
-        setColor(7);
-        return 0;
-    }
-   setColor(2);
-    cout << "Access granted. Welcome " << name << "!\n";
+    setColor(2);
+    cout << "Welcome " << name << "!\n";
     setColor(7);
 
     User player;
