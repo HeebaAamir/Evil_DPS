@@ -15,6 +15,13 @@
 #include<conio.h>
 #include<limits>
 
+
+//Colour coding function
+void setColor(int color) {
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(hConsole, color);
+}
+
 using namespace std;
 
 //Struct for the user details
@@ -138,12 +145,6 @@ void Inventory(User& player, string item){
          setColor(7);
     }
 }
-
-void setColor(int color) {
-    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(hConsole, color);
-}
-
 
 //Function to see if user has smth in their inventory
 //passing the 2 structs into it
