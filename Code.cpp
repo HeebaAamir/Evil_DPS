@@ -988,7 +988,7 @@ string Fire(User& player) {
 
     //Some context
     delay(2);
-    setColor(1);
+    setColor(4);
     cout << "\n[ALERT]: You smell smoke coming from outside your apartment.The fire alarm has not been triggered yet. !" << endl;
     cout << "You hear the panicked screams of people" << endl;
     cout << "You have 15 seconds to grab ONE item nearby:" << endl;
@@ -1778,10 +1778,32 @@ int main() {
         setColor(7);
         return 0;
     }
-    setColor(2);
+   setColor(2);
     cout << "Access granted. Welcome " << name << "!\n";
     setColor(7);
-   
+
+    // Show their previous games
+    ifstream historyFile("game_history.txt");
+    if (historyFile) {
+        setColor(6);
+        cout << "\n=== YOUR PREVIOUS GAMES ===\n";
+        setColor(7);
+        string line;
+        while (getline(historyFile, line)) {
+            if (line.find(name) != string::npos) {
+                // Show this game record
+                cout << line << "\n";
+                for (int i = 0; i < 5; i++) {
+                    getline(historyFile, line);
+                    cout << line << "\n";
+                }
+        }
+    }
+    historyFile.close();
+    cout << "\nPress Enter to start playing...";
+    cin.ignore();
+    cin.get();
+    }
     User player;
     player.name = name;
     player.health = 100;
@@ -1804,6 +1826,7 @@ int main() {
         char ans;
         cin >> ans;
         playAgain = (ans == 'y' || ans == 'Y');
+
     }
     setColor(6);
     cout << "_________Thanks for playing!_________\n";

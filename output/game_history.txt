@@ -19,3 +19,10 @@ Survived: YES
 Final Health: 100
 Final Energy: 100
 ====================
+====================
+Name: Areeba
+Disaster: Building on Fire
+Survived: YES
+Final Health: 50
+Final Energy: 90
+====================
