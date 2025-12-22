@@ -1543,14 +1543,17 @@ string Flood(User& player) {
 
 void Scoring_System_For_Ending_Display(User&player){
      double score = (player.health * 0.4) + (player.energy * 0.3);
+     setColor(4);
         cout << "Final Score: " << score << "/100" << endl;
-
+        setColor(2);
         if (score > 80) {
             cout << "Rating: SURVIVAL EXPERT" << endl;
         }
         else if(score > 50){
+             setColor(2);
              cout << "Rating: SURVIVOR" << endl;}
         else {
+             setColor(4);
             cout << "Rating: NOTICE - Needs Training" << endl;}
 }
 
@@ -1561,7 +1564,9 @@ bool CheckPassword(const string& name) {
         ofstream outFile("password.txt");
         outFile << name << endl;
         outFile.close();
+        setColor(2);
         cout << "New password created!\n";
+        setColor(7);
         return true;
     }
     string stored_password;
@@ -1573,13 +1578,17 @@ bool CheckPassword(const string& name) {
 //Regarding game saving i.e including the data handling
 void SaveGameResult(const User& player, const string& disaster) {
     ofstream file("game_history.txt", ios::app);
+    setColor(6);
     file << "====================\n";
+    setColor(7);
     file << "Name: " << player.name << endl;
     file << "Disaster: " << disaster << endl;
     file << "Survived: " << (player.isAlive ? "YES" : "NO") << endl;
     file << "Final Health: " << player.health << endl;
     file << "Final Energy: " << player.energy << endl;
+    setColor(6);
     file << "====================\n";
+    setColor(7);
     file.close();
 }
 
@@ -1634,28 +1643,41 @@ string PlayOneRound(User& player, string& disaster) {
         return Fire(player);
         break; 
 
-        
         case 4: disaster = "Power Outage";    
         return Power_Outage(player);
         break;
     }
+    setColor(6);
     return "Scenario completed.";
+    setColor(7);
 }
 
 
 int main() {
     string name,disaster, outcome;
-
+    setColor(5);
+    cout<<"_________________________________________________________\n";
+    cout<<"This is a Disaster Simulation meant to put you under pressure for a certain disaster.\n";
+    cout<<"You have limited time and need to make life-saving decisions.\n";
+    cout<<"You presence of mind and experience can save your life one day.\n";
+    cout<<"Your ultimate goal is to survive while keeping the best of your health.\n";
+    cout<<"________________________Good Luck!________________________\n";
+    delay(3);
+    setColor(7);
+   
     cout << "Enter your name: ";
-    cout<<"Your name will act as a password for your progress file.\n";
+    cout <<"Your name will act as a password for your progress file.\n";
     cin >> name;
 
     if (!CheckPassword(name)) {
+        setColor(4);
         cout << "Wrong password! Access denied.\n";
+        setColor(7);
         return 0;
     }
+    setColor(2);
     cout << "Access granted. Welcome " << name << "!\n";
-
+    setColor(7);
    
     User player;
     player.name = name;
@@ -1671,14 +1693,15 @@ int main() {
 
         string disaster;
         PlayOneRound(player, disaster);
-
+        setColor(5);
         cout << "\nDo you want to play again? (y/n): ";
+        setColor(7);
         char ans;
         cin >> ans;
         playAgain = (ans == 'y' || ans == 'Y');
     }
-
-    cout << "Thanks for playing!\n";
+    setColor(6);
+    cout << "_________Thanks for playing!_________\n";
     return 0;
 }
 
